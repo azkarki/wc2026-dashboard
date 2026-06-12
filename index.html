@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>World Cup 2026 · Prediction Scoreboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --text: #f0f0f0;
+    --muted: #888;
+    --gold: #FFD700;
+    --green: #2ecc71;
+    --red: #e74c3c;
+    --accent: #C0392B;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header-left h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .header-left p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .progress-wrap {
+    text-align: right;
+  }
+  .progress-wrap .prog-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .progress-bar {
+    width: 160px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    width: 3%;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    border-radius: 99px;
+  }
+  .prog-numbers {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    text-align: right;
+  }
+  .live-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+    animation: pulse 1.8s infinite;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  main { padding: 28px 32px; max-width: 1400px; margin: 0 auto; }
+  .leaderboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .card.leader { background: #1a1600; border: 1px solid var(--gold); }
+  .rank { font-size: 1.6rem; margin-bottom: 8px; }
+  .pname { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+  .pts { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: var(--gold); line-height: 1; }
+  .pts-label { font-size: 13px; color: var(--muted); font-family: 'Inter', sans-serif; margin-left: 3px; }
+  .acc-val { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+  thead th {
+    background: var(--surface2);
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+  }
+  tbody tr {
+    border-bottom: 1px solid #1c1c1c;
+  }
+  tbody tr:hover { background: var(--surface2); }
+  td { padding: 9px 12px; vertical-align: middle; }
+  .group-pill {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 99px;
+    white-space: nowrap;
+  }
+  .fixture { font-weight: 500; min-width: 180px; }
+  .vs { color: var(--muted); font-size: 11px; margin: 0 4px; }
+  .score-cell {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--gold);
+    text-align: center;
+  }
+  .winner-cell { font-weight: 600; color: var(--text); min-width: 110px; }
+  .pred-col { min-width: 100px; color: var(--muted); }
+  .pts-col  { text-align: center; width: 36px; font-weight: 600; }
+  .correct { color: var(--green) !important; }
+  .wrong { color: var(--red) !important; }
+  .correct-pick { color: var(--text); }
+  .wrong-pick { color: var(--muted); text-decoration: line-through; }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    padding: 24px 32px;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }
+  @media (max-width: 600px) {
+    header, main { padding: 16px; }
+    .header-left h1 { font-size: 1.6rem; }
+    .progress-bar { width: 110px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <h1>⚽ WC 2026 Scoreboard</h1>
+    <p><span class="live-dot"></span>Last updated 12 Jun 2026, 21:30 UTC</p>
+  </div>
+  <div class="header-right">
+    <div class="progress-wrap">
+      <div class="prog-label">Group stage progress</div>
+      <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+      <div class="prog-numbers">2 / 72 matches played</div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="section-title">Leaderboard</div>
+  <div class="leaderboard">
+        <div class="card leader">
+          <div class="rank">🥇</div>
+          <div class="pname">AJIT</div>
+          <div class="pts">1<span class="pts-label">pts</span></div>
+          <div class="acc-val">50% correct</div>
+        </div>
+        <div class="card ">
+          <div class="rank">🥈</div>
+          <div class="pname">ADIT</div>
+          <div class="pts">1<span class="pts-label">pts</span></div>
+          <div class="acc-val">50% correct</div>
+        </div></div>
+  <div class="section-title">Match results &amp; predictions</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>Fixture</th>
+          <th style="text-align:center">Score</th>
+          <th>Winner</th>
+          <th class="pred-col">AJIT</th><th class="pts-col">pts</th><th class="pred-col">ADIT</th><th class="pts-col">pts</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr>
+              <td><span class="group-pill" style="background:#e74c3c20;color:#e74c3c;border:1px solid #e74c3c40">Group A</span></td>
+              <td class="fixture">Mexico <span class="vs">vs</span> South Africa</td>
+              <td class="score-cell">2–0</td>
+              <td class="winner-cell">Mexico</td>
+              <td class="pred-col correct-pick">Mexico</td><td class="pts-col correct">✓</td><td class="pred-col correct-pick">Mexico</td><td class="pts-col correct">✓</td>
+            </tr>
+            <tr>
+              <td><span class="group-pill" style="background:#e74c3c20;color:#e74c3c;border:1px solid #e74c3c40">Group A</span></td>
+              <td class="fixture">Rep. of Korea <span class="vs">vs</span> Czech Rep.</td>
+              <td class="score-cell">2–1</td>
+              <td class="winner-cell">Rep. of Korea</td>
+              <td class="pred-col wrong-pick">Czech Rep.</td><td class="pts-col wrong">✗</td><td class="pred-col wrong-pick">Tie</td><td class="pts-col wrong">✗</td>
+            </tr></tbody>
+    </table>
+  </div>
+</main>
+<footer>
+  Data via OpenFootball · Scoring: 1 pt for correct winner prediction ·
+  2 match(es) scored · 70 remaining
+</footer>
+</body>
+</html>
